@@ -33,7 +33,8 @@ class PlataformaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|string|max:255|unique:plataformas,nombre', // El nombre debe ser único
+            'nombre' => 'required|string|max:255|unique:plataformas,nombre',
+            'creador' => 'nullable|string|max:255',
         ]);
 
         Plataforma::create($request->all());
@@ -70,7 +71,8 @@ class PlataformaController extends Controller
     public function update(Request $request, Plataforma $plataforma)
     {
         $request->validate([
-            'nombre' => 'required|string|max:255|unique:plataformas,nombre,' . $plataforma->id, // El nombre debe ser único, excluyendo el propio ID
+            'nombre' => 'required|string|max:255|unique:plataformas,nombre,' . $plataforma->id,
+            'creador' => 'nullable|string|max:255', // Nueva regla
         ]);
 
         $plataforma->update($request->all());

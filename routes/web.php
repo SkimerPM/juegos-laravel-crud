@@ -5,7 +5,7 @@ use App\Http\Controllers\VideojuegoController;
 use App\Http\Controllers\PlataformaController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('videojuegos.index');
 });
 
 // Rutas de recursos para Videojuegos

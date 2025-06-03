@@ -9,9 +9,7 @@ class Plataforma extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'nombre',
-    ];
+    protected $fillable = ['nombre', 'creador'];
 
     public function videojuegos()
     {

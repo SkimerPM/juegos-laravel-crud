@@ -6,6 +6,7 @@
 
         <p class="text-gray-700 mb-2"><strong class="font-semibold">ID:</strong> {{ $plataforma->id }}</p>
         <p class="text-gray-700 mb-2"><strong class="font-semibold">Nombre:</strong> {{ $plataforma->nombre }}</p>
+        <p class="text-gray-700 mb-2"><strong class="font-semibold">Creador:</strong> {{ $plataforma->creador ?? 'N/A' }}</p> {{-- Muestra el creador --}}
         <p class="text-gray-700 mb-4"><strong class="font-semibold">Videojuegos asociados:</strong> {{ $plataforma->videojuegos_count }}</p>
 
         @if ($plataforma->videojuegos->isNotEmpty())

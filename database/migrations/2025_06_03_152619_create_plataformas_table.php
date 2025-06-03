@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('plataformas', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->unique();
+            $table->string('creador')->nullable();
             $table->timestamps();
         });
     }

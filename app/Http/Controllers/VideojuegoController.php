@@ -9,39 +9,28 @@ use Illuminate\Support\Facades\Storage; // Para manejar la carga de archivos
 
 class VideojuegoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * Muestra una lista de todos los videojuegos.
-     */
+
     public function index()
     {
         // Carga ansiosa las plataformas para evitar el problema N+1
-        $videojuegos = Videojuego::with('plataformas')->orderBy('titulo')->paginate(10);
+        $videojuegos = Videojuego::with('plataformas')->orderBy('anio', 'desc')->paginate(10);
         return view('videojuegos.index', compact('videojuegos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * Muestra el formulario para crear un nuevo videojuego.
-     */
     public function create()
     {
         $plataformas = Plataforma::all(); // Obtén todas las plataformas para el formulario
         return view('videojuegos.create', compact('plataformas'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * Guarda un nuevo videojuego en la base de datos.
-     */
     public function store(Request $request)
     {
         $request->validate([
             'titulo' => 'required|string|max:255',
-            'anio' => 'required|integer|min:1950|max:' . date('Y'), // Asegúrate que el 'anio' sea válido
-            'portada' => 'nullable|image|max:2048', // Validación para la imagen (max 2MB)
-            'plataformas' => 'nullable|array', // Las plataformas seleccionadas deben ser un array
-            'plataformas.*' => 'exists:plataformas,id', // Cada ID de plataforma debe existir en la tabla 'plataformas'
+            'anio' => 'required|integer|min:1950|max:' . date('Y'),
+            'portada' => 'nullable|image|max:4048', 
+            'plataformas' => 'nullable|array', 
+            'plataformas.*' => 'exists:plataformas,id', 
         ]);
 
         $data = $request->except('portada'); // Obtén todos los datos excepto la portada inicialmente
@@ -62,21 +51,15 @@ class VideojuegoController extends Controller
         return redirect()->route('videojuegos.index')->with('success', 'Videojuego creado exitosamente.');
     }
 
-    /**
-     * Display the specified resource.
-     * Muestra los detalles de un videojuego específico.
-     */
+
     public function show(Videojuego $videojuego)
     {
-        // Carga ansiosa las plataformas para mostrar en el detalle
+        // Carga las plataformas para mostrar en el detalle
         $videojuego->load('plataformas');
         return view('videojuegos.show', compact('videojuego'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     * Muestra el formulario para editar un videojuego existente.
-     */
+
     public function edit(Videojuego $videojuego)
     {
         $plataformas = Plataforma::all();
@@ -85,10 +68,6 @@ class VideojuegoController extends Controller
         return view('videojuegos.edit', compact('videojuego', 'plataformas', 'videojuegoPlataformasIds'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     * Actualiza un videojuego en la base de datos.
-     */
     public function update(Request $request, Videojuego $videojuego)
     {
         $request->validate([
@@ -101,9 +80,8 @@ class VideojuegoController extends Controller
 
         $data = $request->except('portada');
 
-        // Manejo de la actualización de imagen
         if ($request->hasFile('portada')) {
-            // Eliminar la portada antigua si existe
+        
             if ($videojuego->portada) {
                 Storage::disk('public')->delete($videojuego->portada);
             }
