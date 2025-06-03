@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\URL; // <--- ¡IMPORTANTE! Añade esta línea
+
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,5 +23,7 @@ class AppServiceProvider extends ServiceProvider
     {
         if ($this->app->environment('production')) {
             URL::forceScheme('https');
-    }
+        } // <--- ESTE CORCHETE CIERRA EL 'if'
+
+    } // <--- ¡AÑADE ESTE CORCHETE! Este cierra el método 'boot()'
 }
